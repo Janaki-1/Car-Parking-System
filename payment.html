@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Payment - SmartPark</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar"><div class="brand">SmartPark</div></header>
+  <main class="container">
+    <div class="form">
+      <h2>Payment</h2>
+      <p id="desc"></p>
+      <input id="card" class="input" placeholder="Card number (simulate)">
+      <input id="name" class="input" placeholder="Name on card">
+      <button id="payBtn" class="small-btn">Pay Now (Simulate)</button>
+    </div>
+  </main>
+  <script src="app.js"></script>
+  <script>
+    const id = qs('id'); const place = qs('place');
+    document.getElementById('desc').textContent = You are booking ${id} at ${place}. This payment is simulated.;
+
+    document.getElementById('payBtn').addEventListener('click', ()=>{
+      const cur = window.SP.Auth.current();
+      if(!cur){ alert('Please login/signup first'); location.href='login.html'; return; }
+      // simulate success
+      const ticket = generateTicketId();
+      const booking = {id,place,slotId:id,type:'paid',ticket,ts:Date.now()};
+      cur.bookings = cur.bookings||[]; cur.bookings.push(booking);
+      window.SP.Auth.saveCurrent(cur);
+      alert('Payment successful — booking confirmed');
+      location.href = ticket.html?ticket=${ticket}&place=${encodeURIComponent(place)}&id=${id};
+    });
+  </script>
+</body>
+</html>

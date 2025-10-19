@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ticket - SmartPark</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar"><div class="brand">SmartPark</div></header>
+  <main class="container center">
+    <div class="form">
+      <h2>Your Ticket</h2>
+      <div id="ticketArea"></div>
+      <a id="homeBtn" class="small-btn" href="index.html">Home</a>
+    </div>
+  </main>
+  <script src="app.js"></script>
+  <script>
+    const ticket = qs('ticket'); const place = qs('place'); const id = qs('id');
+    document.getElementById('ticketArea').innerHTML = `
+      <p><strong>Ticket ID:</strong> ${ticket}</p>
+      <p><strong>Place:</strong> ${place}</p>
+      <p><strong>Slot:</strong> ${id}</p>
+      <p>Show this ticket when you arrive.</p>
+    `;
+  </script>
+</body>
+</html>

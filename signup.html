@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sign Up - SmartPark</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar"><div class="brand">SmartPark</div></header>
+  <main class="container">
+    <div class="form">
+      <h2>Create account</h2>
+      <input id="name" class="input" placeholder="Full name">
+      <input id="email" class="input" placeholder="Email">
+      <input id="pass" class="input" placeholder="Password" type="password">
+      <button id="signupBtn" class="small-btn">Sign Up</button>
+    </div>
+  </main>
+  <script src="app.js"></script>
+  <script>
+    document.getElementById('signupBtn').addEventListener('click', ()=>{
+      const n = document.getElementById('name').value.trim();
+      const e = document.getElementById('email').value.trim();
+      const p = document.getElementById('pass').value;
+      if(!n||!e||!p){alert('Please fill all fields');return}
+      const res = window.SP.Auth.signup(n,e,p);
+      alert(res.msg);
+      if(res.ok) location.href='login.html';
+    });
+  </script>
+</body>
+</html>

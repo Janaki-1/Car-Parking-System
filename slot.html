@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Parking Slot - SmartPark</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar"><div class="brand">SmartPark</div><nav><a href="index.html">Home</a></nav></header>
+  <main class="container">
+    <div id="slotContainer"></div>
+  </main>
+  <script src="app.js"></script>
+  <script>
+    const id = qs('id')||'P1';
+    const place = qs('place')||'Some place';
+    const type = qs('type')||''; // 'free' or 'paid' optional
+
+    // simulate slot detail
+    const slot = {
+      id, title: ${place} - ${id}, img: https://picsum.photos/seed/${encodeURIComponent(place+id)}/900/600, free: (type==='free')
+    };
+
+    function requireLogin(){
+      const cur = window.SP.Auth.current();
+      if(!cur){
+        alert('You must be signed up & logged in to book. Please sign up or login.');
+        location.href = 'login.html';
+        return false;
+      }
+      return true;
+    }
+
+    function render(){
+      const c = document.getElementById('slotContainer');
+      c.innerHTML = `
+        <div class="form">
+          <h2>${slot.title}</h2>
+          <img src="${slot.img}" alt="img" style="border-radius:10px;margin-top:10px">
+          <p style="margin-top:10px">This is a ${slot.free? 'Free parking slot' : 'Paid parking slot'}. Images are provided above.</p>
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button id="confirmBtn" class="small-btn">Confirm Booking</button>
+            <a href="results.html?place=${encodeURIComponent(place)}" class="small-btn">Back</a>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('confirmBtn').addEventListener('click', ()=>{
+        if(!requireLogin()) return;
+        if(type==='paid'){
+          // go to payment
+          location.href = payment.html?id=${id}&place=${encodeURIComponent(place)};
+        } else {
+          // free: create booking and show ticket
+          const cur = window.SP.Auth.current();
+          const ticket = generateTicketId();
+          const booking = {id,place,slotId:id,type:'free',ticket,ts:Date.now()};
+          cur.bookings = cur.bookings||[]; cur.bookings.push(booking);
+          window.SP.Auth.saveCurrent(cur);
+          location.href = ticket.html?ticket=${ticket}&place=${encodeURIComponent(place)}&id=${id};
+        }
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>

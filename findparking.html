@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Find Parking - SmartPark</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar"><div class="brand">SmartPark</div><nav><a href="index.html">Home</a></nav></header>
+  <main class="container">
+    <div class="form">
+      <h2>Find Parking</h2>
+      <p>Type a place in Kerala. Suggestions will show while you type.</p>
+      <input id="placeInput" class="input" placeholder="Enter location (e.g., Alappuzha Bus Stand)" autocomplete="off">
+      <div id="suggestions" class="suggestions" style="display:none"></div>
+      <button id="searchBtn" class="small-btn">Search</button>
+    </div>
+  </main>
+  <script src="app.js"></script>
+  <script>
+    const inp = document.getElementById('placeInput');
+    const suggestions = document.getElementById('suggestions');
+    const data = window.SP.keralaPlaces;
+
+    function updateSuggestions(){
+      const v = inp.value.trim().toLowerCase();
+      if(!v){suggestions.style.display='none';return}
+      const matches = data.filter(x=>x.toLowerCase().includes(v)).slice(0,8);
+      suggestions.innerHTML = matches.map(m=><div class="suggestion">${m}</div>).join('') || '<div class="suggestion">No results</div>';
+      suggestions.style.display='block';
+      Array.from(suggestions.children).forEach(el=>el.addEventListener('click',()=>{inp.value=el.textContent;suggestions.style.display='none'}));
+    }
+    inp.addEventListener('input', updateSuggestions);
+    document.getElementById('searchBtn').addEventListener('click', ()=>{
+      const v = inp.value.trim();
+      if(!v){alert('Please enter a place');return}
+      // go to results page with query
+      location.href = results.html?place=${encodeURIComponent(v)};
+    });
+  </script>
+</body>
+</html>

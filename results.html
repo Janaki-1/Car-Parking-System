@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Parking Results - SmartPark</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar"><div class="brand">SmartPark</div><nav><a href="index.html">Home</a></nav></header>
+  <main class="container">
+    <div id="content" class="form"></div>
+  </main>
+  <script src="app.js"></script>
+  <script>
+    const place = qs('place') || 'Unknown place';
+    const content = document.getElementById('content');
+
+    // create placeholder many slots for any place
+    const slots = [];
+    for(let i=1;i<=12;i++){
+      slots.push({
+        id: 'P'+i,
+        title: ${place} - Parking ${i},
+        free: i%3===0, // some free, some paid
+        price: i%3===0?0: (30 + (i*5)),
+        distance: ${2+i%5} min walk,
+        img: https://picsum.photos/seed/${encodeURIComponent(place+i)}/600/400
+      });
+    }
+
+    function render(){
+      content.innerHTML = <h2>Parking near: <strong>${place}</strong></h2><div class="list-grid">${slots.map(s=>
+        <div class="slot-card">
+          <img src="${s.img}" alt="parking">
+          <h3>${s.title}</h3>
+          <p>${s.distance}</p>
+          <p><span class="tag ${s.free? 'badge-green':'badge-yellow'}">${s.free?'Free':'Paid'}</span> ${s.free?'<span style="color:#0a8a56;margin-left:8px;font-weight:700">Free slot</span>':₹ ${s.price}}</p>
+          <div style="margin-top:10px;display:flex;gap:10px;">
+            <a class="small-btn" href="slot.html?id=${s.id}&place=${encodeURIComponent(place)}">View</a>
+            <a class="small-btn" href="slot.html?id=${s.id}&place=${encodeURIComponent(place)}&type=${s.free?'free':'paid'}">Quick Book</a>
+          </div>
+        </div>).join('')}</div>;
+    }
+
+    render();
+  </script>
+</body>
+</html>

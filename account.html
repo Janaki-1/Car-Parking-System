@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Account - SmartPark</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar"><div class="brand">SmartPark</div><nav><a href="index.html">Home</a></nav></header>
+  <main class="container">
+    <div id="acct" class="form"></div>
+  </main>
+  <script src="app.js"></script>
+  <script>
+    const cur = window.SP.Auth.current();
+    const area = document.getElementById('acct');
+    if(!cur){
+      area.innerHTML = '<p>You are not logged in. Please <a href="signup.html">Sign up</a> or <a href="login.html">Login</a>.</p>';
+    } else {
+      area.innerHTML = `<h2>Welcome, ${cur.name}</h2>
+        <p><button id="logout" class="small-btn">Logout</button></p>
+        <h3>Your Bookings</h3>
+        <div id="bookings"></div>`;
+      document.getElementById('logout').addEventListener('click', ()=>{window.SP.Auth.logout()});
+      const b = cur.bookings||[];
+      document.getElementById('bookings').innerHTML = b.length? b.map(x=><div class="slot-card"><p><strong>${x.place}</strong></p><p>Slot: ${x.slotId}</p><p>Type: ${x.type}</p><p>Ticket: ${x.ticket}</p></div>).join('') : '<p>No bookings yet.</p>';
+    }
+  </script>
+</body>
+</html>
